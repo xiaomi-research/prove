@@ -1,0 +1,7 @@
+torch>=2.1.2
+transformers
+pandas
+numpy
+opencv-python
+Pillow
+scikit-image

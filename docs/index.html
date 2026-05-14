@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROVE: A Perceptual RemOVal cohErence Benchmark for Visual Media</title>
+  <meta name="description" content="PROVE proposes perception-aligned metrics (RC-S, RC-T) and a real-world benchmark (PROVE-Bench) for evaluating object removal in images and videos.">
+  <link rel="stylesheet" href="static/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="container">
+    <h1>PROVE: A <span class="highlight">P</span>erceptual <span class="highlight">R</span>em<span class="highlight">OV</span>al coh<span class="highlight">E</span>rence<br>Benchmark for Visual Media</h1>
+    <p class="authors">
+      Fuhao Li, &nbsp; Shaofeng You, &nbsp; Jiagao Hu, &nbsp; Yu Liu, &nbsp; Yuxuan Chen, &nbsp; Zepeng Wang, &nbsp; Fei Wang, &nbsp; Daiguo Zhou, &nbsp; Jian Luan
+    </p>
+    <p class="affiliations">MiLM Plus, Xiaomi Inc.</p>
+    <div class="links">
+      <a href="https://arxiv.org/abs/2605.xxxxx" class="btn-paper">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Paper
+      </a>
+      <a href="https://github.com/xiaomi-research/prove" class="btn-code">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        Code
+      </a>
+      <a href="https://huggingface.co/datasets/HigherHu/PROVE-Bench" class="btn-data">
+        &#129303; Dataset
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Navigation -->
+<nav>
+  <ul>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#motivation">Motivation</a></li>
+    <li><a href="#method">Method</a></li>
+    <li><a href="#benchmark">Benchmark</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#citation">Citation</a></li>
+  </ul>
+</nav>
+
+<!-- Abstract -->
+<section id="abstract">
+  <div class="container">
+    <h2>Abstract</h2>
+    <p class="abstract-text">
+      Evaluating object removal in images and videos remains challenging because the task is inherently one-to-many, yet existing metrics frequently disagree with human perception. Full-reference metrics reward copy-paste behaviors over genuine erasure; no-reference metrics suffer from systematic biases such as favoring blurry results; and global temporal metrics are insensitive to localized artifacts within edited regions.
+    </p>
+    <p class="abstract-text">
+      To address these limitations, we propose <strong>RC</strong> (Removal Coherence), a pair of perception-aligned metrics: <strong>RC-S</strong>, which measures spatial coherence via sliding-window feature comparison between masked and background regions, and <strong>RC-T</strong>, which measures temporal consistency via distribution tracking within shared restored regions across adjacent frames. To validate RC and support community benchmarking, we further introduce <strong>PROVE-Bench</strong>, a two-tier real-world benchmark comprising <strong>PROVE-M</strong>, an 80-video paired dataset with motion augmentation, and <strong>PROVE-H</strong>, a 100-video challenging subset without ground truth. Together, RC metrics and PROVE-Bench form the <strong>PROVE</strong> (Perceptual RemOVal cohErence) evaluation framework for visual media. Experiments across diverse image and video benchmarks demonstrate that RC achieves substantially stronger alignment with human judgments than existing evaluation protocols.
+    </p>
+  </div>
+</section>
+
+<!-- Motivation -->
+<section id="motivation">
+  <div class="container">
+    <h2>Motivation</h2>
+    <p style="text-align:center; max-width:800px; margin:0 auto 20px;">
+      Existing evaluation metrics for object removal exhibit systematic biases that conflict with human perception.
+    </p>
+    <div class="figure">
+      <img src="static/images/fig1.png" alt="Metric bias in object removal evaluation">
+      <p class="caption"><strong>Figure 1.</strong> Illustrative examples of metric bias in object removal evaluation. (a) Full-reference metrics reward copy-paste behavior over genuine erasure. (b) No-reference metrics favor blurry outputs across diffusion steps. (c) Traditional vs. diffusion-based methods show inconsistencies between metric judgments and visual perception.</p>
+    </div>
+    <div class="figure">
+      <img src="static/images/limitation_side_effect.jpg" alt="Object removal failure cases">
+      <p class="caption"><strong>Figure 2.</strong> RC-S captures locally visible side effects and residual artifacts. Human-perceived ranking (1 = best): D &gt; B &gt; A &gt; C. RC-S ranking: D(1) &gt; B(2) &gt; A(3) &gt; C(4), consistent with human perception. In contrast, ReMOVE ranks A(1) &gt; B(3) &gt; C(4) &gt; D(2), and CFD ranks A(1) &gt; B(2) &gt; C(4) &gt; D(3) &mdash; both incorrectly favor the residual-containing result A over the cleanest removal D.</p>
+    </div>
+
+    <div class="findings">
+      <div class="finding-card">
+        <h4>Full-Reference Bias</h4>
+        <p>FR metrics (PSNR, SSIM, LPIPS) assume strict point-to-point correspondence to a single reference, rewarding conservative copy-paste outputs over perceptually realistic restorations.</p>
+      </div>
+      <div class="finding-card">
+        <h4>No-Reference Blind Spots</h4>
+        <p>NR metrics like ReMOVE and CFD frequently assign inflated scores to blurry outputs and incorrectly penalize structurally sound restorations in complex occlusion scenarios.</p>
+      </div>
+      <div class="finding-card">
+        <h4>Temporal Insensitivity</h4>
+        <p>Global temporal metrics (TC, TF) are dominated by unchanged background regions, failing to detect localized artifacts within the removed regions where object removal most commonly fails.</p>
+      </div>
+    </div>
+
+    <div class="figure" style="margin-top:32px;">
+      <img src="static/images/fig4.png" alt="Blur bias analysis">
+      <p class="caption"><strong>Figure 3.</strong> &ldquo;Blur is Clean&rdquo; bias analysis. As blur radius increases inside the masked region, ReMOVE scores incorrectly improve and CFD incorrectly decreases (appears better), while RC-S correctly and monotonically degrades &mdash; demonstrating its robustness against the blur-favoring bias.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Method -->
+<section id="method">
+  <div class="container">
+    <h2>Proposed RC Metrics</h2>
+    <p style="text-align:center; max-width:800px; margin:0 auto 24px;">
+      We introduce a unified local distribution matching framework in deep semantic feature space, named <strong>Removal Coherence (RC)</strong>, instantiated as two complementary metrics.
+    </p>
+    <div class="figure">
+      <img src="static/images/method.png" alt="Overview of the proposed RC metrics">
+      <p class="caption"><strong>Figure 4.</strong> Overview of the proposed RC metrics. (a) RC-S measures intra-frame spatial coherence by comparing masked and background feature distributions within sliding windows. (b) RC-T measures inter-frame temporal consistency by comparing restored-region feature distributions across adjacent frames under union-based cropping and intersection-based evaluation.</p>
+    </div>
+
+    <div class="metric-overview">
+      <div class="metric-card">
+        <h4>RC-S &mdash; Spatial Coherence</h4>
+        <p>
+          RC-S evaluates spatial coherence by cropping each target region, extracting DINOv2 features, and applying a <strong>sliding-window MMD</strong> to compare feature distributions inside and outside the removed region. This enables fine-grained detection of local spatial incoherence that global metrics miss.
+        </p>
+      </div>
+      <div class="metric-card">
+        <h4>RC-T &mdash; Temporal Consistency</h4>
+        <p>
+          RC-T extends the local distribution matching design to the temporal domain. It jointly crops adjacent frames under a <strong>shared union mask</strong>, then measures feature distribution drift exclusively within the intersected restored regions, yielding sensitive detection of local temporal instability.
+        </p>
+      </div>
+    </div>
+
+    <h3>Key Design Choices</h3>
+    <div class="findings">
+      <div class="finding-card">
+        <h4>DINOv2 Features</h4>
+        <p>DINOv2 provides a perceptually sensitive feature space for assessing fine-grained local coherence, showing stronger alignment with low-level human visual characteristics.</p>
+      </div>
+      <div class="finding-card">
+        <h4>Sliding Window</h4>
+        <p>Window-based comparison exposes regional inconsistency more explicitly than global aggregation, better matching the way humans visually inspect removal results.</p>
+      </div>
+      <div class="finding-card">
+        <h4>MMD Distance</h4>
+        <p>Maximum Mean Discrepancy accurately measures local distribution shifts between restored regions and surrounding context, outperforming first-order cosine similarity.</p>
+      </div>
+    </div>
+
+    <h3>Why Local Cropping Matters</h3>
+    <div class="figure">
+      <img src="static/images/crop_vs.png" alt="ReMOVE vs RC-S cropping comparison">
+      <p class="caption">Cropping strategies of ReMOVE vs. RC-S. <span style="color:green;font-weight:600;">Green</span> boxes denote crop regions, <span style="color:red;font-weight:600;">red</span> areas denote masks. ReMOVE uses a single enlarged crop even when targets are spatially far apart, introducing excessive irrelevant background that dilutes the feature difference. RC-S crops each target independently with local context, enabling fine-grained detection of incoherence.</p>
+    </div>
+    <div class="figure">
+      <img src="static/images/blur_swap.png" alt="Blur and swap robustness comparison">
+      <p class="caption">Counter-intuitive rankings under local perturbations. We apply Gaussian blur or region swap to the masked areas. Human judgment clearly prefers: ori &gt; blur &gt; swap. However, ReMOVE and CFD produce the reverse ordering (<span style="color:red;font-weight:600;">red</span> = best-ranked, <span style="color:green;font-weight:600;">green</span> = second-best), while RC-S remains consistent with human perception.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Benchmark -->
+<section id="benchmark">
+  <div class="container">
+    <h2>PROVE-Bench</h2>
+    <p style="text-align:center; max-width:800px; margin:0 auto 24px;">
+      A two-tier real-world benchmark for evaluating object removal in video, combining paired evaluability with unconstrained stress testing.
+    </p>
+
+    <div class="figure">
+      <img src="static/images/benchmark.png" alt="PROVE-M construction pipeline">
+      <p class="caption"><strong>Figure 5.</strong> Construction pipeline of PROVE-M: real-world paired capture with controlled conditions, three-stage pairwise quality control, and Ken Burns-style motion augmentation applied synchronously to input&ndash;mask&ndash;GT triplets.</p>
+    </div>
+
+    <div class="benchmark-grid">
+      <div class="benchmark-card">
+        <div class="card-header">PROVE-M &mdash; Motion-Augmented Paired Benchmark</div>
+        <div class="card-body">
+          <p><strong>80 videos</strong> with aligned input&ndash;mask&ndash;ground-truth triplets captured in real-world scenes.</p>
+          <ul>
+            <li>Real-world paired capture with tripod-mounted camera</li>
+            <li>Motion augmentation via Ken Burns-style transformations</li>
+            <li>81 frames at 1080p resolution per video</li>
+            <li>Three-stage quality control filtering pipeline</li>
+            <li>Covers shadows, reflections, multiple effects, and fast motion</li>
+          </ul>
+        </div>
+      </div>
+      <div class="benchmark-card">
+        <div class="card-header">PROVE-H &mdash; Hard Real-World Benchmark</div>
+        <div class="card-body">
+          <p><strong>100 videos</strong> targeting challenging scenarios without ground truth.</p>
+          <ul>
+            <li>Crowd scenes and dense occlusions</li>
+            <li>Dynamic backgrounds (water, flames, rain, snow)</li>
+            <li>Highly textured backgrounds (grasslands, deserts)</li>
+            <li>Complex reflections and intertwined side effects</li>
+            <li>Fast-motion scenes with SAM3-generated masks</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="samples-grid">
+      <div class="figure">
+        <img src="static/images/prove_m_samples.png" alt="PROVE-M sample frames">
+        <p class="caption"><strong>(a) PROVE-M</strong> &mdash; Sample frames from the motion-augmented paired benchmark.</p>
+      </div>
+      <div class="figure">
+        <img src="static/images/prove_h_samples.png" alt="PROVE-H sample frames">
+        <p class="caption"><strong>(b) PROVE-H</strong> &mdash; Sample frames from the hard real-world benchmark.</p>
+      </div>
+    </div>
+
+    <!-- Benchmark Comparison Table -->
+    <h3 style="text-align:center;">Comparison with Existing Benchmarks</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Dataset</th>
+            <th>Real</th>
+            <th>GT</th>
+            <th>Shadows</th>
+            <th>Reflections</th>
+            <th>Multi-Effect</th>
+            <th>Disconnected</th>
+            <th>Crowds</th>
+            <th>Textured</th>
+            <th>Fast Motion</th>
+            <th>#Videos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://davischallenge.org/davis2017/code.html">DAVIS</a></td><td>&#10003;</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td><td>&#10007;</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td><td>90</td>
+          </tr>
+          <tr>
+            <td><a href="https://omnimatte-rf.github.io/">Movies</a></td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td>&#10007;</td><td>&#10007;</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td><td>5</td>
+          </tr>
+          <tr>
+            <td><a href="https://d2nerf.github.io/">Kubric</a></td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td><td>&#10007;</td><td>&#10007;</td><td>&#10007;</td><td>5</td>
+          </tr>
+          <tr>
+            <td><a href="https://huggingface.co/datasets/Shaldon/GenProp-Data">GenProp</a></td><td>&#10003;</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td><td>&#10007;</td><td>&#10007;</td><td>&#10007;</td><td>&#10007;</td><td>&#10007;</td><td>15</td>
+          </tr>
+          <tr>
+            <td><a href="https://huggingface.co/datasets/Kunbyte/ROSE-Dataset">ROSE-Bench</a></td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td>&#10007;</td><td>&#10003;</td><td>&#10007;</td><td>&#10007;</td><td>&#10007;</td><td>60</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>PROVE-M (Ours)</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td>&#10007;</td><td>&#10007;</td><td>&#10003;</td><td>80</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>PROVE-H (Ours)</td><td>&#10003;</td><td>&#10007;</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td>100</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Results -->
+<section id="results">
+  <div class="container">
+    <h2>Results</h2>
+
+    <h3 style="text-align:center;">Benchmark Results on PROVE-M</h3>
+    <p style="text-align:center; max-width:800px; margin:0 auto 16px;">
+      Quantitative evaluation of mainstream video object removal methods on the PROVE-M benchmark. &darr; means lower is better, &uarr; means higher is better.
+    </p>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>PSNR&uarr;</th><th>SSIM&uarr;</th><th>LPIPS&darr;</th>
+            <th><a href="https://github.com/chandrasekaraditya/ReMOVE" style="color:#fff;text-decoration:underline;">ReMOVE</a>&uarr;</th><th><a href="https://github.com/yeates/OmniPaint" style="color:#fff;text-decoration:underline;">CFD</a>&darr;</th>
+            <th>RC-S&uarr;</th><th>RC-T&darr;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="traditional-row"><td><a href="https://github.com/hitachinsk/FGT">FGT</a></td><td>21.6511</td><td>0.8619</td><td>0.2013</td><td>0.8622</td><td>0.3229</td><td>0.3797</td><td>0.8031</td></tr>
+          <tr class="traditional-row"><td><a href="https://github.com/sczhou/ProPainter">ProPainter</a></td><td>22.1846</td><td>0.8768</td><td>0.1559</td><td>0.8676</td><td><strong>0.2774</strong></td><td>0.4427</td><td>0.5951</td></tr>
+          <tr class="traditional-row"><td><a href="https://github.com/lixiaowen-xw/DiffuEraser">DiffuEraser</a></td><td>22.0758</td><td>0.8706</td><td>0.1518</td><td>0.8681</td><td>0.3308</td><td>0.4787</td><td>0.4851</td></tr>
+          <tr><td><a href="https://github.com/ali-vilab/VACE">VACE (1.3B)</a></td><td>20.0826</td><td>0.8654</td><td>0.1545</td><td>0.8117</td><td>0.3283</td><td>0.4036</td><td>0.5217</td></tr>
+          <tr><td><a href="https://github.com/zibojia/MiniMax-Remover">Minimax-Remover (1.3B)</a></td><td>21.7476</td><td>0.8707</td><td>0.1542</td><td>0.8710</td><td>0.3202</td><td>0.4793</td><td>0.4485</td></tr>
+          <tr><td><a href="https://github.com/gen-omnimatte/gen-omnimatte-public">GenOmni (CogV5B)</a></td><td>25.0165</td><td>0.9030</td><td>0.1223</td><td>0.8755</td><td>0.3842</td><td>0.5029</td><td>0.3145</td></tr>
+          <tr><td><a href="https://github.com/gen-omnimatte/gen-omnimatte-public">GenOmni (Wan1.3B)</a></td><td>25.1480</td><td>0.9017</td><td>0.1109</td><td>0.8815</td><td>0.3457</td><td>0.5188</td><td>0.3238</td></tr>
+          <tr><td><a href="https://github.com/Kunbyte-AI/ROSE">ROSE (1.3B)</a></td><td>26.1333</td><td>0.9003</td><td>0.1212</td><td>0.8803</td><td>0.3364</td><td>0.4924</td><td>0.6538</td></tr>
+          <tr><td><a href="https://github.com/FudanCVL/EffectErase">EffectErase (1.3B)</a></td><td>27.0049</td><td>0.9098</td><td>0.1142</td><td><strong>0.8841</strong></td><td>0.3412</td><td><strong>0.5270</strong></td><td><strong>0.2728</strong></td></tr>
+          <tr><td><a href="https://github.com/WeChatCV/UnderEraser">UnderEraser (14B)</a></td><td><strong>28.3325</strong></td><td>0.9156</td><td>0.0981</td><td>0.8824</td><td>0.2986</td><td>0.5188</td><td>0.3276</td></tr>
+          <tr><td><a href="https://github.com/xiaomi-research/svor">SVOR (1.3B)</a></td><td>27.4289</td><td><strong>0.9239</strong></td><td><strong>0.0839</strong></td><td>0.8836</td><td>0.2794</td><td>0.5236</td><td>0.2987</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="text-align:center; margin-top:36px;">Benchmark Results on PROVE-H</h3>
+    <p style="text-align:center; max-width:800px; margin:0 auto 16px;">
+      Quantitative evaluation of mainstream video object removal methods on the PROVE-H benchmark. &darr; means lower is better, &uarr; means higher is better.
+    </p>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>PSNR&uarr;</th><th>SSIM&uarr;</th><th>LPIPS&darr;</th>
+            <th><a href="https://github.com/chandrasekaraditya/ReMOVE" style="color:#fff;text-decoration:underline;">ReMOVE</a>&uarr;</th><th><a href="https://github.com/yeates/OmniPaint" style="color:#fff;text-decoration:underline;">CFD</a>&darr;</th>
+            <th>RC-S&uarr;</th><th>RC-T&darr;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="traditional-row"><td><a href="https://github.com/hitachinsk/FGT">FGT</a></td><td>29.4448</td><td>0.8615</td><td>0.1927</td><td>0.8474</td><td>0.3065</td><td>0.3716</td><td>0.5866</td></tr>
+          <tr class="traditional-row"><td><a href="https://github.com/sczhou/ProPainter">ProPainter</a></td><td><strong>33.3531</strong></td><td><strong>0.9274</strong></td><td>0.1063</td><td>0.8383</td><td><strong>0.2830</strong></td><td>0.3932</td><td>0.4453</td></tr>
+          <tr class="traditional-row"><td><a href="https://github.com/lixiaowen-xw/DiffuEraser">DiffuEraser</a></td><td>31.4112</td><td>0.9178</td><td>0.1098</td><td>0.8440</td><td>0.3165</td><td>0.4387</td><td>0.3911</td></tr>
+          <tr><td><a href="https://github.com/ali-vilab/VACE">VACE (1.3B)</a></td><td>26.7266</td><td>0.8898</td><td>0.1071</td><td>0.8047</td><td>0.3288</td><td>0.4192</td><td>0.3438</td></tr>
+          <tr><td><a href="https://github.com/zibojia/MiniMax-Remover">Minimax-Remover (1.3B)</a></td><td>29.6021</td><td>0.8660</td><td>0.1315</td><td>0.8545</td><td>0.3320</td><td>0.4617</td><td>0.3277</td></tr>
+          <tr><td><a href="https://github.com/gen-omnimatte/gen-omnimatte-public">GenOmni (CogV5B)</a></td><td>28.7643</td><td>0.8873</td><td>0.1183</td><td>0.8536</td><td>0.3516</td><td>0.5006</td><td><strong>0.2141</strong></td></tr>
+          <tr><td><a href="https://github.com/gen-omnimatte/gen-omnimatte-public">GenOmni (Wan1.3B)</a></td><td>29.3140</td><td>0.8940</td><td><strong>0.1027</strong></td><td><strong>0.8596</strong></td><td>0.3422</td><td>0.5127</td><td>0.2368</td></tr>
+          <tr><td><a href="https://github.com/Kunbyte-AI/ROSE">ROSE (1.3B)</a></td><td>27.6261</td><td>0.8508</td><td>0.1402</td><td>0.8538</td><td>0.3361</td><td>0.4687</td><td>0.4373</td></tr>
+          <tr><td><a href="https://github.com/FudanCVL/EffectErase">EffectErase (1.3B)</a></td><td>24.3793</td><td>0.8156</td><td>0.1742</td><td>0.8532</td><td>0.3590</td><td>0.5081</td><td>0.2363</td></tr>
+          <tr><td><a href="https://github.com/WeChatCV/UnderEraser">UnderEraser (14B)</a></td><td>27.4989</td><td>0.8485</td><td>0.1434</td><td>0.8560</td><td>0.3165</td><td>0.5075</td><td>0.2688</td></tr>
+          <tr><td><a href="https://github.com/xiaomi-research/svor">SVOR (1.3B)</a></td><td>27.5335</td><td>0.8907</td><td>0.1046</td><td>0.8574</td><td>0.3107</td><td><strong>0.5166</strong></td><td>0.2419</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="text-align:center; max-width:800px; margin:12px auto 0; font-size:0.85rem; color:#718096;">
+      <em>Note: Due to compliance requirements, the open-source data differs slightly from the data used in the paper. The results above are based on the open-source version and may exhibit minor numerical differences from the paper, but the overall trends remain consistent.</em>
+    </p>
+
+    <h3 style="text-align:center; margin-top:36px;">Human Correlation Analysis</h3>
+    <p style="text-align:center; max-width:800px; margin:0 auto 16px;">
+      RC-S achieves the best average correlation with human rankings across six benchmarks, ranking first on five of six benchmarks under both Kendall's &tau; and Spearman's &rho;.
+    </p>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th rowspan="2">Metric</th>
+            <th colspan="7">Kendall's &tau;</th>
+            <th colspan="7">Avg. Spearman &rho;</th>
+          </tr>
+          <tr>
+            <th>RORD</th><th>OBER</th><th>DAVIS</th><th>ROSE</th><th>PROVE-M</th><th>PROVE-H</th><th>AVG</th>
+            <th>RORD</th><th>OBER</th><th>DAVIS</th><th>ROSE</th><th>PROVE-M</th><th>PROVE-H</th><th>AVG</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>PSNR</td><td>0.01</td><td>&mdash;</td><td>&mdash;</td><td>0.36</td><td>0.38</td><td>&mdash;</td><td>0.25</td><td>0.02</td><td>&mdash;</td><td>&mdash;</td><td>0.44</td><td>0.45</td><td>&mdash;</td><td>0.30</td></tr>
+          <tr><td>SSIM</td><td>-0.22</td><td>&mdash;</td><td>&mdash;</td><td>0.11</td><td>0.43</td><td>&mdash;</td><td>0.11</td><td>-0.31</td><td>&mdash;</td><td>&mdash;</td><td>0.11</td><td>0.46</td><td>&mdash;</td><td>0.09</td></tr>
+          <tr><td>LPIPS</td><td>-0.23</td><td>&mdash;</td><td>&mdash;</td><td>0.24</td><td>0.33</td><td>&mdash;</td><td>0.12</td><td>-0.28</td><td>&mdash;</td><td>&mdash;</td><td>0.28</td><td>0.37</td><td>&mdash;</td><td>0.13</td></tr>
+          <tr><td>m-LPIPS</td><td>0.19</td><td>&mdash;</td><td>&mdash;</td><td><strong>0.68</strong></td><td>0.68</td><td>&mdash;</td><td>0.52</td><td>0.24</td><td>&mdash;</td><td>&mdash;</td><td><strong>0.75</strong></td><td><strong>0.75</strong></td><td>&mdash;</td><td>0.58</td></tr>
+          <tr><td><a href="https://github.com/chandrasekaraditya/ReMOVE">ReMOVE</a></td><td>0.06</td><td>0.54</td><td>0.15</td><td>0.21</td><td>0.33</td><td>0.23</td><td>0.26</td><td>0.08</td><td>0.61</td><td>0.16</td><td>0.24</td><td>0.36</td><td>0.27</td><td>0.29</td></tr>
+          <tr><td><a href="https://github.com/yeates/OmniPaint">CFD</a></td><td>-0.04</td><td>0.40</td><td>0.21</td><td>0.03</td><td>0.24</td><td>0.12</td><td>0.16</td><td>-0.05</td><td>0.47</td><td>0.25</td><td>0.04</td><td>0.26</td><td>0.14</td><td>0.18</td></tr>
+          <tr class="highlight-row"><td><strong>RC-S (Ours)</strong></td><td><strong>0.31</strong></td><td><strong>0.57</strong></td><td><strong>0.60</strong></td><td>0.61</td><td><strong>0.70</strong></td><td><strong>0.76</strong></td><td><strong>0.59</strong></td><td><strong>0.39</strong></td><td><strong>0.66</strong></td><td><strong>0.68</strong></td><td>0.69</td><td><strong>0.75</strong></td><td><strong>0.82</strong></td><td><strong>0.66</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="text-align:center; margin-top:36px;">Validation of RC-T</h3>
+    <p style="text-align:center; max-width:800px; margin:0 auto 16px;">
+      RC-T responds sensitively and monotonically to controlled temporal corruptions, whereas existing temporal metrics (TC, TF) remain largely insensitive.
+    </p>
+    <div class="figure">
+      <img src="static/images/rct.png" alt="RC-T validation" style="max-width:640px;">
+      <p class="caption"><strong>Figure 6.</strong> Sensitivity-based validation of temporal metrics under increasing corruption severity. RC-T exhibits monotonically degrading scores, whereas TC and TF remain insensitive or even improve.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Citation -->
+<section id="citation">
+  <div class="container">
+    <h2>Citation</h2>
+    <p style="text-align:center; margin-bottom:16px;">If you find our work useful for your research, please consider citing our paper:</p>
+    <div class="citation-block" id="bibtex">@article{li2026prove,
+   title={PROVE: A Perceptual RemOVal cohErence Benchmark for Visual Media},
+   author={Li, Fuhao and You, Shaofeng and Hu, Jiagao and Liu, Yu and Chen, Yuxuan and Wang, Zepeng and Wang, Fei and Zhou, Daiguo and Luan, Jian},
+   journal={arXiv preprint arXiv:2605.xxxxx},
+   year={2026}
+}</div>
+    <div style="text-align:center; margin-top:12px;">
+      <button class="copy-btn" onclick="copyBibtex()" style="position:static;">Copy BibTeX</button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>&copy; 2026 MiLM Plus, Xiaomi Inc. &nbsp;|&nbsp; Licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a></p>
+  </div>
+</footer>
+
+<script>
+function copyBibtex() {
+  const text = document.getElementById('bibtex').textContent;
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+  const btn = document.querySelector('.copy-btn');
+  btn.textContent = 'Copied!';
+  setTimeout(() => { btn.textContent = 'Copy BibTeX'; }, 2000);
+}
+</script>
+
+</body>
+</html>
