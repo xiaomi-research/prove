@@ -5,7 +5,7 @@
     <p>
     Official PyTorch code for <em>PROVE: A Perceptual RemOVal cohErence Benchmark for Visual Media</em><br>    </p>
     </p>
-    <a href="https://arxiv.org/abs/2605.xxxxx"><img src="https://img.shields.io/badge/arXiv-2605.xxxxx-b31b1b" alt="version"></a>
+    <a href="https://arxiv.org/abs/2605.14534"><img src="https://img.shields.io/badge/arXiv-2605.14534-b31b1b" alt="version"></a>
     <a href="https://xiaomi-research.github.io/prove" target='_blank'><img src="https://img.shields.io/badge/🐳-Project%20Page-blue"></a>
     <a href='https://huggingface.co/datasets/HigherHu/PROVE-Bench'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-PROVE--Bench-orange'></a>
     <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="mit"></a>
@@ -199,7 +199,7 @@ If you find our repo useful for your research, please consider citing our paper:
 @article{li2026prove,
    title={PROVE: A Perceptual RemOVal cohErence Benchmark for Visual Media},
    author={Li, Fuhao and You, Shaofeng and Hu, Jiagao and Liu, Yu and Chen, Yuxuan and Wang, Zepeng and Wang, Fei and Zhou, Daiguo and Luan, Jian},
-   journal={arXiv preprint arXiv:2605.xxxxx},
+   journal={arXiv preprint arXiv:2605.14534},
    year={2026}
 }
 ```
