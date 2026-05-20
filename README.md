@@ -49,24 +49,42 @@ If PROVE is helpful to your projects, please help star this repo. Thanks!
 | [GenOmni (Wan1.3B)](https://github.com/gen-omnimatte/gen-omnimatte-public) | 25.1480 | 0.9017 | 0.1109 | 0.8815 | 0.3457 | 0.5188 | 0.3238 |
 | [ROSE (1.3B)](https://github.com/Kunbyte-AI/ROSE) | 26.1333 | 0.9003 | 0.1212 | 0.8803 | 0.3364 | 0.4924 | 0.6538 |
 | [EffectErase (1.3B)](https://github.com/FudanCVL/EffectErase) | 27.0049 | 0.9098 | 0.1142 | **0.8841** | 0.3412 | **0.5270** | **0.2728** |
-| [UnderEraser (14B)](https://github.com/WeChatCV/UnderEraser) | **28.3325** | 0.9156 | 0.0981 | 0.8824 | 0.2986 | 0.5188 | 0.3276 |
-| [SVOR (1.3B)](https://github.com/xiaomi-research/svor) | 27.4289 | **0.9239** | **0.0839** | 0.8836 | 0.2794 | 0.5236 | 0.2987 |
+| [UnderEraser (14B)](https://github.com/WeChatCV/UnderEraser) | **28.3325** | <u>0.9156</u> | <u>0.0981</u> | 0.8824 | 0.2986 | 0.5188 | 0.3276 |
+| [SVOR (1.3B)](https://github.com/xiaomi-research/svor) | <u>27.4289</u> | **0.9239** | **0.0839** | <u>0.8836</u> | <u>0.2794</u> | <u>0.5236</u> | <u>0.2987</u> |
 
 ### PROVE-H (without Ground Truth)
 
 | Method | PSNR↑ | SSIM↑ | LPIPS↓ | ReMOVE↑ | CFD↓ | RC-S↑ | RC-T↓ |
 |---|---|---|---|---|---|---|---|
-| [FGT](https://github.com/hitachinsk/FGT) | 29.4448 | 0.8615 | 0.1927 | 0.8474 | 0.3065 | 0.3716 | 0.5866 |
+| [FGT](https://github.com/hitachinsk/FGT) | 29.4448 | 0.8615 | 0.1927 | 0.8474 | <u>0.3065</u> | 0.3716 | 0.5866 |
 | [ProPainter](https://github.com/sczhou/ProPainter) | **33.3531** | **0.9274** | 0.1063 | 0.8383 | **0.2830** | 0.3932 | 0.4453 |
-| [DiffuEraser](https://github.com/lixiaowen-xw/DiffuEraser) | 31.4112 | 0.9178 | 0.1098 | 0.8440 | 0.3165 | 0.4387 | 0.3911 |
+| [DiffuEraser](https://github.com/lixiaowen-xw/DiffuEraser) | <u>31.4112</u> | <u>0.9178</u> | 0.1098 | 0.8440 | 0.3165 | 0.4387 | 0.3911 |
 | [VACE (1.3B)](https://github.com/ali-vilab/VACE) | 26.7266 | 0.8898 | 0.1071 | 0.8047 | 0.3288 | 0.4192 | 0.3438 |
 | [Minimax-Remover (1.3B)](https://github.com/zibojia/MiniMax-Remover) | 29.6021 | 0.8660 | 0.1315 | 0.8545 | 0.3320 | 0.4617 | 0.3277 |
 | [GenOmni (CogV5B)](https://github.com/gen-omnimatte/gen-omnimatte-public) | 28.7643 | 0.8873 | 0.1183 | 0.8536 | 0.3516 | 0.5006 | **0.2141** |
-| [GenOmni (Wan1.3B)](https://github.com/gen-omnimatte/gen-omnimatte-public) | 29.3140 | 0.8940 | **0.1027** | **0.8596** | 0.3422 | 0.5127 | 0.2368 |
+| [GenOmni (Wan1.3B)](https://github.com/gen-omnimatte/gen-omnimatte-public) | 29.3140 | 0.8940 | **0.1027** | **0.8596** | 0.3422 | <u>0.5127</u> | 0.2368 |
 | [ROSE (1.3B)](https://github.com/Kunbyte-AI/ROSE) | 27.6261 | 0.8508 | 0.1402 | 0.8538 | 0.3361 | 0.4687 | 0.4373 |
-| [EffectErase (1.3B)](https://github.com/FudanCVL/EffectErase) | 24.3793 | 0.8156 | 0.1742 | 0.8532 | 0.3590 | 0.5081 | 0.2363 |
+| [EffectErase (1.3B)](https://github.com/FudanCVL/EffectErase) | 24.3793 | 0.8156 | 0.1742 | 0.8532 | 0.3590 | 0.5081 | <u>0.2363</u> |
 | [UnderEraser (14B)](https://github.com/WeChatCV/UnderEraser) | 27.4989 | 0.8485 | 0.1434 | 0.8560 | 0.3165 | 0.5075 | 0.2688 |
-| [SVOR (1.3B)](https://github.com/xiaomi-research/svor) | 27.5335 | 0.8907 | 0.1046 | 0.8574 | 0.3107 | **0.5166** | 0.2419 |
+| [SVOR (1.3B)](https://github.com/xiaomi-research/svor) | 27.5335 | 0.8907 | <u>0.1046</u> | <u>0.8574</u> | 0.3107 | **0.5166** | 0.2419 |
+
+### Overall (PROVE-M + PROVE-H combined)
+
+Results computed over all cases from both PROVE-M and PROVE-H together. Only no-reference metrics are reported.
+
+| Method | ReMOVE↑ | CFD↓ | RC-S↑ | RC-T↓ |
+|---|---|---|---|---|
+| [FGT](https://github.com/hitachinsk/FGT) | 0.8540 | 0.3138 | 0.3752 | 0.6828 |
+| [ProPainter](https://github.com/sczhou/ProPainter) | 0.8513 | **0.2805** | 0.4152 | 0.5119 |
+| [DiffuEraser](https://github.com/lixiaowen-xw/DiffuEraser) | 0.8547 | 0.3229 | 0.4565 | 0.4329 |
+| [VACE (1.3B)](https://github.com/ali-vilab/VACE) | 0.8078 | 0.3286 | 0.4123 | 0.4229 |
+| [Minimax-Remover (1.3B)](https://github.com/zibojia/MiniMax-Remover) | 0.8618 | 0.3268 | 0.4695 | 0.3814 |
+| [GenOmni (CogV5B)](https://github.com/gen-omnimatte/gen-omnimatte-public) | 0.8633 | 0.3661 | 0.5016 | <u>0.2587</u> |
+| [GenOmni (Wan1.3B)](https://github.com/gen-omnimatte/gen-omnimatte-public) | **0.8693** | 0.3438 | 0.5154 | 0.2755 |
+| [ROSE (1.3B)](https://github.com/Kunbyte-AI/ROSE) | 0.8656 | 0.3362 | 0.4792 | 0.5335 |
+| [EffectErase (1.3B)](https://github.com/FudanCVL/EffectErase) | 0.8669 | 0.3511 | <u>0.5165</u> | **0.2525** |
+| [UnderEraser (14B)](https://github.com/WeChatCV/UnderEraser) | 0.8677 | 0.3085 | 0.5125 | 0.2949 |
+| [SVOR (1.3B)](https://github.com/xiaomi-research/svor) | <u>0.8690</u> | <u>0.2968</u> | **0.5197** | 0.2671 |
 
 > **Note:** Due to compliance requirements, the open-source data differs slightly from the data used in the paper. The results above are based on the open-source version and may exhibit minor numerical differences from the paper, but the overall trends remain consistent.
 
