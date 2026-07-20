@@ -65,6 +65,17 @@ body {
 .affiliations {
   font-size: 0.95rem;
   color: var(--text-light);
+  margin-bottom: 10px;
+}
+
+.venue-badge {
+  display: inline-block;
+  font-size: 1.05rem;
+  color: #2b6cb0;
+  background: #ebf8ff;
+  border: 1px solid #bee3f8;
+  border-radius: 24px;
+  padding: 6px 20px;
   margin-bottom: 24px;
 }
 

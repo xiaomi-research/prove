@@ -3,7 +3,7 @@
     PROVE (<b>P</b>erceptual <b>R</b>em<b>OV</b>al coh<b>E</b>rence Benchmark)
     </h1>
     <p>
-    Official PyTorch code for <em>PROVE: A Perceptual RemOVal cohErence Benchmark for Visual Media</em><br>    </p>
+    Official PyTorch code for <em>PROVE: A Perceptual RemOVal cohErence Benchmark for Visual Media</em> (ACM MM 2026)<br>    </p>
     </p>
     <a href="https://arxiv.org/abs/2605.14534"><img src="https://img.shields.io/badge/arXiv-2605.14534-b31b1b" alt="version"></a>
     <a href="https://xiaomi-research.github.io/prove" target='_blank'><img src="https://img.shields.io/badge/🐳-Project%20Page-blue"></a>
@@ -15,6 +15,9 @@ If PROVE is helpful to your projects, please help star this repo. Thanks!
 
 </div>
 
+## News
+
+* **`Jul. 14th, 2026`:** 🎉 PROVE is accepted by ACM MM 2026! 🎉
 
 ## Overview
 
@@ -24,7 +27,7 @@ If PROVE is helpful to your projects, please help star this repo. Thanks!
 
 - **RC-S** (Removal Coherence - Spatial): Measures how well the inpainted region blends with surrounding background within a single frame via sliding-window MMD on DINOv2 patch features.
 - **RC-T** (Removal Coherence - Temporal): Measures temporal coherence of the inpainted region across consecutive frames via distribution tracking within shared restored regions.
-- **PROVE-Bench**: A two-tier real-world benchmark comprising **PROVE-M** (80 motion-augmented paired videos with GT) and **PROVE-H** (100 challenging videos without GT).
+- **PROVE-Bench**: A two-tier real-world benchmark comprising **PROVE-M** (80 motion-augmented paired videos with GT) and **PROVE-H** (100 challenging paired videos without GT).
 
 ### Key Findings
 
@@ -36,7 +39,7 @@ If PROVE is helpful to your projects, please help star this repo. Thanks!
 
 ## Benchmark Results
 
-### PROVE-M (with Ground Truth)
+### PROVE-M
 
 | Method | PSNR↑ | SSIM↑ | LPIPS↓ | ReMOVE↑ | CFD↓ | RC-S↑ | RC-T↓ |
 |---|---|---|---|---|---|---|---|
@@ -52,7 +55,7 @@ If PROVE is helpful to your projects, please help star this repo. Thanks!
 | [UnderEraser (14B)](https://github.com/WeChatCV/UnderEraser) | **28.3325** | <u>0.9156</u> | <u>0.0981</u> | 0.8824 | 0.2986 | 0.5188 | 0.3276 |
 | [SVOR (1.3B)](https://github.com/xiaomi-research/svor) | <u>27.4289</u> | **0.9239** | **0.0839** | <u>0.8836</u> | <u>0.2794</u> | <u>0.5236</u> | <u>0.2987</u> |
 
-### PROVE-H (without Ground Truth)
+### PROVE-H
 
 | Method | PSNR↑ | SSIM↑ | LPIPS↓ | ReMOVE↑ | CFD↓ | RC-S↑ | RC-T↓ |
 |---|---|---|---|---|---|---|---|
@@ -214,10 +217,10 @@ Our work benefits from the following open-source projects:
 If you find our repo useful for your research, please consider citing our paper:
 
 ```bibtex
-@article{li2026prove,
+@inproceedings{li2026prove,
    title={PROVE: A Perceptual RemOVal cohErence Benchmark for Visual Media},
    author={Li, Fuhao and You, Shaofeng and Hu, Jiagao and Liu, Yu and Chen, Yuxuan and Wang, Zepeng and Wang, Fei and Zhou, Daiguo and Luan, Jian},
-   journal={arXiv preprint arXiv:2605.14534},
+   booktitle={Proceedings of the 34th ACM International Conference on Multimedia},
    year={2026}
 }
 ```
